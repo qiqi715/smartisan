@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-import {cartAdd, updatePrompt} from '../../actions';
+import {
+    cartAdd,
+    updatePrompt
+} from '../../actions';
 
 class Item extends Component {
     constructor(props) {
@@ -22,18 +25,15 @@ class Item extends Component {
 
     /*加入购物车*/
     cartAdd(itemId, quantity) {
-        this.props.dispatch(cartAdd(itemId, quantity)).then( res => {
-            if (res.code) {
-                this.props.dispatch(updatePrompt(
-                    {
+        this.props.dispatch(cartAdd(itemId, quantity))
+            .then( res => {
+                if (res.code) {
+                    this.props.dispatch(updatePrompt({
                         tip: res.data,
                         show: true
-                    }
-                ));
-            } else {
-
-            }
-        })
+                    }));
+                }
+            });
     }
 
     render() {

@@ -128,8 +128,6 @@ export const cartAdd = (item_id, quantity) => {
 /*减持购物车*/
 export const cartReduce = (item_id, cart_id, quantity) => {
     return (dispatch) => {
-        console.log(quantity);
-
         return axios({
                 method: 'post',
                 url: '/api/cart/reduce',
@@ -139,6 +137,27 @@ export const cartReduce = (item_id, cart_id, quantity) => {
                     quantity
                 }
             })
+            .then( res => {
+                if (!res.data.code) {
+                    dispatch(cartUpdate())
+                }
+                return Promise.resolve(res.data)
+            })
+    }
+}
+
+/*修改购物车*/
+export const cartEdit = (item_id, cart_id, quantity) => {
+    return (dispatch) => {
+        return axios({
+            method: 'post',
+            url: '/api/cart/edit',
+            data: {
+                item_id,
+                cart_id,
+                quantity
+            }
+        })
             .then( res => {
                 if (!res.data.code) {
                     dispatch(cartUpdate())

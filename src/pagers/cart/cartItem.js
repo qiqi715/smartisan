@@ -6,10 +6,18 @@ import {
     cartChecked,
     cartAdd,
     cartReduce,
-    cartDelete
+    cartEdit,
+    cartDelete,
+    updatePrompt
 } from '../../actions';
 
 class CartItem extends Component {
+
+    componentWillReceiveProps(nextProps) {
+        if (this.refs && this.refs.quantity) {
+            this.refs.quantity.value = nextProps.cart.quantity;
+        }
+    }
 
     /*选中某件商品*/
     cartChecked(cart_id, checked) {
@@ -20,30 +28,41 @@ class CartItem extends Component {
     cartAdd(cart, num) {
         if (cart.quantity + num < cart.stock) {
             this.props.dispatch(cartAdd(cart.itemId, num));
+        } else {
+            this.cartAlert("商品数量超过库存!");
         }
+    }
+
+    /*错误提示*/
+    cartAlert(tip) {
+        this.props.dispatch(updatePrompt({
+            tip,
+            show: true
+        }));
+        this.refs.quantity.value = this.props.cart.quantity;
     }
 
     /*减持购物车中的商品数量*/
     cartReduce(cart, num) {
-        console.log(cart.quantity ,  num);
-
         if (cart.quantity >= 1 + num) {
             this.props.dispatch(cartReduce(cart.itemId, cart.id, num));
+        } else {
+            this.cartAlert("商品数量不能小于1个！");
         }
     }
 
-    /*购物车数量改变*/
-    cartChange(cart, e) {
+    /*失去焦点*/
+    blur(e)  {
         var value =  Number(e.target.value);
-        if (!isNaN(value) &&  value >= 1) {
-            var rs = value - cart.quantity;
-            console.log(2, value, cart.quantity, rs);
-
-            if (rs > 0) {
-                this.cartAdd(cart, Math.abs(rs));
-            } else {
-                this.cartReduce(cart, Math.abs(rs));
+        var cart = this.props.cart;
+        if (isNaN(value)) {
+            this.cartAlert("不能输入非数字，请重新输入！");
+        } else if (value >= 1) {
+            if (value != cart.quantity) {
+                this.props.dispatch(cartEdit(cart.itemId, cart.id, value));
             }
+        } else {
+            this.cartAlert("商品数量不能小于1个！");
         }
     }
 
@@ -92,8 +111,9 @@ class CartItem extends Component {
                                   onClick={this.cartReduce.bind(this, cart, 1)}
                             >-</span>
                             <span className="num">
-                                <input type="text" value={cart.quantity}
-                                   onChange={this.cartChange.bind(this, cart)} />
+                                <input type="text" ref="quantity"
+                                   defaultValue={cart.quantity}
+                                   onBlur={this.blur.bind(this)} />
                             </span>
                             <span className={[
                                 "up",
