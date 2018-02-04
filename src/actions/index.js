@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /*更新提示框信息*/
-export const updatePrompt = (prompt) => {
+export const promptUpdate = (prompt) => {
     return (dispatch) => {
         dispatch({
             type: "PROMPT_UPDATE",
@@ -11,7 +11,7 @@ export const updatePrompt = (prompt) => {
 }
 
 /*获取商品*/
-export const fetchItems = () => {
+export const itemUpdate= () => {
     return (dispatch) => {
         axios({
                 method: 'get',
@@ -88,7 +88,7 @@ export const userVerify = () => {
 /*更新购物车*/
 export const cartUpdate = () => {
     return (dispatch) => {
-            axios({
+         return axios({
                 method: 'get',
                 url: '/api/cart'
             })
@@ -101,6 +101,7 @@ export const cartUpdate = () => {
                     localStorage.setItem('isCartsNew', JSON.stringify(false));
                     localStorage.setItem('carts', JSON.stringify(res.data.data));
                 }
+                return Promise.resolve(res.data);
             })
     }
 }
@@ -118,9 +119,9 @@ export const cartAdd = (item_id, quantity) => {
             })
             .then( res => {
                 if (!res.data.code) {
-                    dispatch(cartUpdate())
+                    dispatch(cartUpdate());
                 }
-                return Promise.resolve(res.data)
+                return Promise.resolve(res.data);
             })
     }
 }
@@ -216,7 +217,118 @@ export const cartClear = () => {
                 if (!res.data.code) {
                     dispatch(cartUpdate())
                 }
-                return Promise.resolve(res.data)
+                return Promise.resolve(res.data);
             })
     }
 }
+
+/*地址更新*/
+export const addressUpdate = (id) => {
+    return (dispatch) => {
+        return axios({
+            method: 'get',
+            url: '/api/user/address' + (id ? '?id=' + id : ''),
+        })
+        .then( res => {
+            if (!res.data.code) {
+                dispatch({
+                    type: "ADDRESS_UPDATE",
+                    payload: res.data.data
+                });
+            }
+            return Promise.resolve(res.data);
+        })
+    }
+}
+
+/*地址新增*/
+export const addressAdd = (addr) => {
+    return (dispatch) => {
+        return axios({
+            method: 'post',
+            url: '/api/user/address/add',
+            data: {
+                user_name: addr.userName,
+                telephone: addr.telephone,
+                area_code: addr.areaCode,
+                phone: addr.phone,
+                province: addr.province,
+                city: addr.city,
+                district: addr.district,
+                street: addr.street
+            }
+        })
+        .then( res => {
+            if (!res.data.code) {
+                dispatch(addressUpdate());
+            }
+            return Promise.resolve(res.data);
+        });
+    }
+};
+
+/*地址更改*/
+export const addressEdit = (addr) => {
+    return (dispatch) => {
+        return axios({
+            method: 'post',
+            url: '/api/user/address/edit',
+            data: {
+                id: addr.id,
+                user_name: addr.userName,
+                telephone: addr.telephone,
+                area_code: addr.areaCode,
+                phone: addr.phone,
+                province: addr.province,
+                city: addr.city,
+                district: addr.district,
+                street: addr.street
+            }
+        })
+        .then( res => {
+            if (!res.data.code) {
+               dispatch(addressUpdate());
+            }
+            return Promise.resolve(res.data);
+        });
+    }
+};
+
+/*地址设为默认*/
+export const addressSetDefault = (id) => {
+    return (dispatch) => {
+        return axios({
+            method: 'post',
+            url: '/api/user/address/set_default',
+            data: {
+                id
+            }
+        })
+        .then( res => {
+            if (!res.data.code) {
+                dispatch(addressUpdate());
+            }
+            return Promise.resolve(res.data);
+        });
+    }
+};
+
+/*地址删除*/
+export const addressDelete = (id) => {
+    return (dispatch) => {
+        return axios({
+            method: 'post',
+            url: '/api/user/address/delete',
+            data: {
+                id
+            }
+        })
+        .then( res => {
+            if (!res.data.code) {
+                dispatch(addressUpdate());
+            }
+            return Promise.resolve(res.data);
+        });
+    }
+};
+

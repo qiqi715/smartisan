@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import '../../assets/css/goodsList.css';
 import Item from './item';
-import {fetchItems} from '../../actions/index';
+import {itemUpdate} from '../../actions/index';
 
 class Main extends Component {
     constructor(props) {
@@ -20,7 +20,7 @@ class Main extends Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(fetchItems());
+        this.props.dispatch(itemUpdate());
     }
 
     render() {
@@ -30,7 +30,6 @@ class Main extends Component {
             }
             return item.pid == 0;
         });
-
 
         return (
             <div className="sku-box store-content">

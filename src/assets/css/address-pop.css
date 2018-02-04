@@ -123,6 +123,7 @@
     transition: opacity .3s ease;
 }
 #pop .module-form-row .form-item-v3 i{
+    z-index: 1;
     position: absolute;
     left: 15px;
     top: 0;
@@ -130,6 +131,8 @@
     color: #BEBEBE;
 }
 #pop .module-form-row .form-item-v3 input{
+    position: relative;
+    z-index: 2;
     padding: 0 15px;
     background-color: transparent;
     border: none;
@@ -141,8 +144,14 @@
 #pop .address-form .area-code-w{
     width: 118px;
 }
+#pop .address-form input.js-address-area-code {
+    width: 88px;
+}
 #pop .address-form .telephone-w{
     width: 238px;
+}
+#pop .address-form input.js-address-telephone {
+    width: 208px;
 }
 #pop .module-form-row div.select-item{
     width: auto;
@@ -203,6 +212,9 @@
     height: 20px;
     background: url(../img/checkbox-bg.png) no-repeat;
     cursor: pointer;
+}
+#pop .address-form .blue-checkbox-on {
+    background-position: 0 -20px;
 }
 #pop .address-form .blue-checkbox{
     top: 0;

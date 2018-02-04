@@ -8,7 +8,7 @@ import {
     cartReduce,
     cartEdit,
     cartDelete,
-    updatePrompt
+    promptUpdate
 } from '../../actions';
 
 class CartItem extends Component {
@@ -35,7 +35,7 @@ class CartItem extends Component {
 
     /*错误提示*/
     cartAlert(tip) {
-        this.props.dispatch(updatePrompt({
+        this.props.dispatch(promptUpdate({
             tip,
             show: true
         }));

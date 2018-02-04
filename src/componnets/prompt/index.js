@@ -2,17 +2,15 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import '../../assets/css/prompt.css';
-import {updatePrompt} from '../../actions';
+import {promptUpdate} from '../../actions';
 
 class Prompt extends Component {
     /*确定提示*/
     toSure() {
-        this.props.dispatch(updatePrompt(
-            {
+        this.props.dispatch(promptUpdate({
                 tip: "",
                 show: false
-            }
-        ));
+        }));
     }
 
     render() {

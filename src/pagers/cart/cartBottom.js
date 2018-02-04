@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {
+    Link,
+    NavLink
+} from 'react-router-dom';
 
 import {
     cartChecked,
@@ -94,8 +97,10 @@ class CartBottom extends Component {
                     </div>
                         <span className={[
                             "jianguo-blue-main-btn big-main-btn js-checkout",
-                            rs.checkNum ? "disabled-btn" : ""
-                        ]}><a>现在结算</a></span>
+                            rs.checkNum ? "" : "disabled-btn"
+                        ].join(" ")}>
+                            <NavLink to="/checkout" isActive={ e => rs.checkNum}>现在结算</NavLink>
+                        </span>
                 </div>
             </div>
         )

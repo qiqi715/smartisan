@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 import {
     cartAdd,
-    updatePrompt
+    promptUpdate
 } from '../../actions';
 
 class Item extends Component {
@@ -28,7 +28,7 @@ class Item extends Component {
         this.props.dispatch(cartAdd(itemId, quantity))
             .then( res => {
                 if (res.code) {
-                    this.props.dispatch(updatePrompt({
+                    this.props.dispatch(promptUpdate({
                         tip: res.data,
                         show: true
                     }));

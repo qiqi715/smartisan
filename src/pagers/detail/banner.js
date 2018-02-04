@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import {
     cartAdd,
-    updatePrompt
+    promptUpdate
 } from '../../actions';
 
 class Banner extends Component {
@@ -46,7 +46,7 @@ class Banner extends Component {
         this.props.dispatch(cartAdd(this.props.id, this.state.quantity))
             .then( res => {
                 if (res.code) {
-                    this.props.dispatch(updatePrompt({
+                    this.props.dispatch(promptUpdate({
                         tip: res.data,
                         show: true
                     }));

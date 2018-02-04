@@ -4,13 +4,13 @@ import {connect} from 'react-redux';
 import '../../assets/css/item.css';
 import Gallery from './gallery';
 import Banner from './banner';
-import {fetchItems} from '../../actions/index';
+import {itemUpdate} from '../../actions/index';
 
 class Detail extends Component {
 
     componentWillMount() {
         if (!this.props.items.length) {
-           this.props.dispatch(fetchItems());
+           this.props.dispatch(itemUpdate());
         }
     }
 
