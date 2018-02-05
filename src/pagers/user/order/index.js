@@ -90,7 +90,10 @@ class UserOrder extends Component {
             }
         });
 
-        //var orders = this.props.orders;
+        orders.sort( (a, b) => {
+            return  b.orderTime - a.orderTime;
+        });
+
         return (
             <div className="account-order">
                 <div className="gray-box">

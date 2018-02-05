@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 
-
-
 class Menu extends Component {
-
     constructor(props) {
         super(props);
 
@@ -14,14 +11,23 @@ class Menu extends Component {
 
     componentDidMount() {
         /*单击其他关闭menu*/
-        document.addEventListener('click', e => {
+        document.addEventListener('click', this.clickCloseMenu);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('click', this.clickCloseMenu);
+    }
+
+    /*点击其他关闭菜单*/
+    clickCloseMenu() {
+        return e => {
             if (!( e.target === this.refs.menu
                 || this.refs.menu.contains(e.target)) ) {
                 this.setState({
                     isShow: false
                 });
             }
-        });
+        }
     }
 
     /*菜单点击*/
