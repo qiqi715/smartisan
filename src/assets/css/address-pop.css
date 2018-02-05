@@ -240,6 +240,7 @@
 }
 #pop .dialog-blue-btn a{
     display: block;
+    width: 100%;
     padding: 2px 0;
     background: #5F7ED7;
     background: linear-gradient(#6F97E5,#527ED9);

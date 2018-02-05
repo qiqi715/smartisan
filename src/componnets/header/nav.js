@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-
+import {Link} from 'react-router-dom';
 
 class Nav extends Component {
 
@@ -11,7 +11,7 @@ class Nav extends Component {
                     this.props.data.map( (item, index) => {
                         return (
                             <li key={index}>
-                                <a href="javascript:;">{item}</a>
+                                <Link to={item.url}>{item.name}</Link>
                             </li>
                         )
                     })

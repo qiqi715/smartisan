@@ -1,8 +1,49 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 
 import '../../assets/css/payment.css';
+import {
+    orderUpdate,
+    orderPayment,
+    promptUpdate
+} from "../../actions";
+
 class Payment extends Component {
+
+    componentWillMount() {
+        if (!this.props.orders.length) {
+            this.props.dispatch(orderUpdate());
+        }
+    }
+
+    /*订单支付*/
+    orderPayment(id, e) {
+        e.preventDefault();
+        this.props.dispatch(orderPayment(id)).then( res => {
+            if (res.code) {
+                this.props.dispatch(promptUpdate({
+                    tip: res.data,
+                    show: true
+                }));
+            } else {
+                this.props.history.push('/user/order');
+            }
+        });
+    }
+
     render() {
+        var id = this.props.match.params.id;
+        var order = this.props.orders.find( order => order.id == id);
+        if (!order) {
+            return "";
+        }
+        var rs = order.items.reduce( (pre, next) => {
+            pre.total += next.price * next.quantity;
+            return pre;
+        }, {
+            total: 0
+        }) ;
+
         return (
             <div className="content page-order-payment">
                 <div className="gray-box clear">
@@ -16,11 +57,14 @@ class Payment extends Component {
                     </div>
                     <div className="box-inner payment-checkout-panel clear">
 	    	            <span className="jianguo-blue-main-btn big-main-btn js-payment-order">
-	    	                <a>现在支付</a>
+	    	                <a onClick={this.orderPayment.bind(this, order.id)}>现在支付</a>
 	    	            </span>
-                        <span className="prices"> 应付金额：   <em><span>¥ </span>199.00</em>   </span>
+                        <span className="prices"> 应付金额：
+                            <em><span>¥ </span>{(rs.total / 100).toFixed(2)}</em>
+                        </span>
                     </div>
                 </div>
+
                 <div className="confirm-detail">
                     <div className="info-title">订单编号</div>
                     <p className="info-detail">170620718648448</p>
@@ -77,4 +121,8 @@ class Payment extends Component {
     }
 }
 
-export default Payment;
+export default connect(state => {
+    return {
+        orders: state.orders
+    }
+})(Payment);

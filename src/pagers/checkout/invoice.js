@@ -1,6 +1,20 @@
 import React, {Component} from 'react';
 
 class Invoice extends Component {
+    /*发票抬头选择*/
+    invoiceChoose(index) {
+        if (typeof this.props.invoiceChoose === "function") {
+            this.props.invoiceChoose(index);
+        }
+    }
+
+    /*发票抬头改变*/
+    invoiceChange(e) {
+        if (typeof this.props.invoiceChange === "function") {
+            this.props.invoiceChange(e.target.value);
+        }
+    }
+
     render() {
         return (
             <div className="gray-box">
@@ -11,19 +25,27 @@ class Invoice extends Component {
                     <p className="invoice-detail"> 发票类型：电子发票 </p>
                     <div className="invoice-detail"> 发票抬头：
                         <div className="radio-box">
-                            <label>
-                                <input type="radio" className="hide"/>
-                                <span className="blue-radio blue-radio-on"><a></a></span>  个人
-                            </label>
-                            <label>
-                                <input type="radio" className="hide"/>
-                                <span className="blue-radio"><a></a></span>  单位
-                            </label>
+                            {
+                                this.props.radioValues.map( (item, index) => {
+                                    return (
+                                        <label key={index}>
+                                            <input type="radio" className="hide"/>
+                                            <span className={["blue-radio",
+                                                this.props.index == index? "blue-radio-on" : ""].join(" ")}
+                                                  onClick={this.invoiceChoose.bind(this, index)}
+                                            ><a></a></span>  {item}
+                                        </label>
+                                    )
+                                })
+                            }
                         </div>
                         <div className="module-form-row form-item fn-hide js-invoice-title">
                             <div className="module-form-item-wrapper no-icon small-item">
-                                <i>请填写公司发票抬头</i>
-                                <input type="text" className="js-verify"/>
+                                <i style={{display: this.props.invoice ? "none" : "block"}}>请填写公司发票抬头</i>
+                                <input type="text" className="js-verify"
+                                       value={this.props.invoice}
+                                       onChange={this.invoiceChange.bind(this)}
+                                />
                             </div>
                         </div>
                     </div>
@@ -33,5 +55,9 @@ class Invoice extends Component {
         );
     }
 }
+
+Invoice.defaultProps = {
+  radioValues: ["个人", "单位"]
+};
 
 export default Invoice;

@@ -332,3 +332,61 @@ export const addressDelete = (id) => {
     }
 };
 
+/*订单更新*/
+export const orderUpdate = () => {
+    return (dispatch) => {
+        return axios({
+            method: 'get',
+            url: '/api/order'
+        })
+        .then( res => {
+            if (!res.data.code) {
+                dispatch({
+                    type: 'ORDER_UPDATE',
+                    payload: res.data.data
+                });
+            }
+            return Promise.resolve(res.data);
+        });
+    }
+}
+
+/*新增订单*/
+export const orderAdd = (address_id) => {
+    return (dispatch) => {
+        return axios({
+            method: 'post',
+            url: '/api/order/add',
+            data: {
+                address_id
+            }
+        })
+        .then( res => {
+            if (!res.data.code) {
+                dispatch(orderUpdate());
+                dispatch(itemUpdate());
+            }
+            return Promise.resolve(res.data);
+        });
+    }
+}
+
+/*订单支付*/
+export const orderPayment = (id) => {
+    return (dispatch) => {
+        return axios({
+            method: 'post',
+            url: '/api/order/payment',
+            data: {
+                id
+            }
+        })
+        .then( res => {
+            if (!res.data.code) {
+                dispatch(orderUpdate());
+            }
+            return Promise.resolve(res.data);
+        });
+    }
+}
+

@@ -7,19 +7,6 @@ import CartItem from './cartItem';
 import CartBottom from './cartBottom';
 
 class Cart extends Component {
-    componentDidMount() {
-        window.onstorage = () => {
-            var isCartsNew = JSON.parse(localStorage.getItem('isCartsNew'));
-            if (!isCartsNew) {
-                var carts = JSON.parse(localStorage.getItem('carts'));
-                this.props.dispatch({
-                    type: "CARTS_UPDATE",
-                    payload: carts
-                });
-                localStorage.setItem('isCartsNew', JSON.stringify(true));
-            }
-        };
-    }
 
     viewCart() {
         if (!this.props.carts.length) {

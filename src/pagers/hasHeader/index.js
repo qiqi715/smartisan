@@ -28,7 +28,7 @@ class HasHeader extends Component {
                     <Route path="/user" component={User} />
 
                     <Route path="/checkout" component={Checkout} />
-                    <Route path="/payment" component={Payment} />
+                    <Route path="/payment/:id" component={Payment} />
                 </div>
             </div>
         );

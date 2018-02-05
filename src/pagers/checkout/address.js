@@ -1,38 +1,18 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-
-import {addressUpdate} from '../../actions';
+import {withRouter} from 'react-router-dom';
 
 class Address extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            id: -1
-        }
-    }
-
-    componentDidMount() {
-        if (!this.props.address.length) {
-            this.props.dispatch(addressUpdate()).then( res => {
-                if (!res.code) {
-                    var defaultAddr = res.data.find( addr => addr.isDefault);
-                    if (defaultAddr) {
-                        this.setState({
-                            id: defaultAddr.id
-                        });
-                    }
-                }
-            });
-        }
-    }
 
     /*选择某个地址*/
-    selectAddr(id) {
-        this.setState({
-            ...this.state,
-            id
-        })
+    addrSelect(index) {
+        if (typeof this.props.addrSelect === "function") {
+            this.props.addrSelect(index);
+        }
+    }
+
+    /*地址新增*/
+    addrAdd() {
+        this.props.history.push("/checkout/addressProp");
     }
 
     render() {
@@ -46,11 +26,11 @@ class Address extends Component {
                         <div className="address-common-table js-multiple-address-panel">
                             <ul className="address-item-list clear js-address-item-list">
                                 {
-                                    this.props.address.map(addr => {
+                                    this.props.address.map((addr, index) => {
                                         return (
                                             <li key={addr.id} className={["js-choose-address",
-                                                this.state.id == addr.id ? "selected-address-item" : ""].join(" ")}
-                                                onClick={this.selectAddr.bind(this, addr.id)}
+                                                this.props.index == index ? "selected-address-item" : ""].join(" ")}
+                                                onClick={this.addrSelect.bind(this, index)}
                                             >
                                                 <div className="address-item">
                                                     <div className="name-section">  {addr.username}  </div>
@@ -66,7 +46,9 @@ class Address extends Component {
                                         )
                                     })
                                 }
-                                <li className="add-address-item js-add-address">
+                                <li className="add-address-item js-add-address"
+                                    onClick={this.addrAdd.bind(this)}
+                                >
                                     <p>使用新地址</p>
                                 </li>
                             </ul>
@@ -78,8 +60,4 @@ class Address extends Component {
     }
 }
 
-export default connect(state => {
-    return {
-        address: state.address
-    }
-})(Address);
+export default withRouter(Address);

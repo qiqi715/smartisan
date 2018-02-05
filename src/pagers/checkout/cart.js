@@ -8,18 +8,14 @@ import {connect} from 'react-redux';
 import {cartUpdate} from '../../actions';
 
 class Cart extends Component {
-    componentDidMount() {
-        window.onstorage = () => {
-            var isCartsNew = JSON.parse(localStorage.getItem('isCartsNew'));
-            if (!isCartsNew) {
-                var carts = JSON.parse(localStorage.getItem('carts'));
-                this.props.dispatch({
-                    type: "CARTS_UPDATE",
-                    payload: carts
-                });
-                localStorage.setItem('isCartsNew', JSON.stringify(true));
-            }
-        };
+
+    /*订单提交*/
+    orderSubmit(isActive, e) {
+        e.preventDefault();
+        if (isActive
+            && typeof this.props.orderSubmit === "function") {
+            this.props.orderSubmit();
+        }
     }
 
     render() {
@@ -31,6 +27,7 @@ class Cart extends Component {
         }, {
             total: 0
         });
+        var isActive = ckCarts.length && this.props.addrLength;
 
         return (
             <div className="gray-box">
@@ -84,14 +81,11 @@ class Cart extends Component {
                 <div className="box-inner">
                     <div className="last-payment clear">
                         <span className="jianguo-blue-main-btn big-main-btn payment-blue-bt fn-right js-checkout">
-                            <NavLink to="/payment" isActive={e => {
-                                if (ckCarts.length) {
-                                    
-                                }
-                                return ckCarts.length;
-                            }}>提交订单</NavLink>
+                            <a onClick={this.orderSubmit.bind(this, isActive)}>提交订单</a>
                         </span>
-                        <span className="prices fn-right">应付金额： <em>¥ {(rs.total / 100).toFixed(2)}</em></span>
+                        <span className="prices fn-right">应付金额：
+                            <em>¥ {(rs.total / 100).toFixed(2)}</em>
+                        </span>
                     </div>
                 </div>
             </div>

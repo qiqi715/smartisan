@@ -101,13 +101,21 @@ class AddressProp extends Component {
             this.props.dispatch(addressEdit(this.state.addr)).then( res => {
                 this.setDefault(res);
             });
-
         } else {
             this.props.dispatch(addressAdd(this.state.addr)).then( res => {
                 this.setDefault(res);
+
+                if (typeof this.props.addBack === "function") {
+                    this.props.addBack();
+                }
             });
         }
-        this.props.history.push('/user/address');
+        this.goBack(e);
+    }
+
+    /*回退到前一个地址*/
+    goBack(e) {
+        this.props.history.goBack();
         e.preventDefault();
     }
 
@@ -135,7 +143,7 @@ class AddressProp extends Component {
                             <div className="dialog-tit clear">
                                 <h4 className="js-dialog-title">管理收货地址</h4>
                             </div>
-                            <Link to="/user/address" className="dialog-close" >x</Link>
+                            <a onClick={this.goBack.bind(this)} className="dialog-close" >x</a>
                         </div>
                         <div className="dialog-con js-dialog-container">
                             <div className="animate-layer">

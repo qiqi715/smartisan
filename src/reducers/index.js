@@ -6,6 +6,7 @@ import items from './items';
 import carts from './carts';
 import user from './user';
 import address from './address';
+import orders from './orders';
 import prompt from './prompt';
 
 export default combineReducers({
@@ -13,5 +14,6 @@ export default combineReducers({
     carts,
     user,
     address,
+    orders,
     prompt
 });

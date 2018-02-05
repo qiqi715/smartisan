@@ -14,6 +14,18 @@ class Header extends Component {
         if (!this.props.carts.length) {
             this.props.dispatch(cartUpdate());
         }
+
+        window.onstorage = () => {
+            var isCartsNew = JSON.parse(localStorage.getItem('isCartsNew'));
+            if (!isCartsNew) {
+                var carts = JSON.parse(localStorage.getItem('carts'));
+                this.props.dispatch({
+                    type: "CARTS_UPDATE",
+                    payload: carts
+                });
+                localStorage.setItem('isCartsNew', JSON.stringify(true));
+            }
+        };
     }
 
     render() {
@@ -54,23 +66,68 @@ class Header extends Component {
 
 Header.defaultProps = {
     navGlobal: [
-      "在线商城",
-      "坚果 Pro",
-      "Smartisan M1 / M1L",
-      "Smartisan OS",
-      "欢喜云",
-      "应用下载",
-      "官方论坛"
+        {
+            name: "在线商城",
+            url: "/"
+        },
+        {
+            name: "坚果 Pro",
+            url: "/"
+        },
+        {
+            name: "Smartisan M1 / M1L",
+            url: "/"
+        },
+        {
+            name: "Smartisan OS",
+            url: "/"
+        },
+        {
+            name: "欢喜云",
+            url: "/"
+        },
+        {
+            name: "应用下载",
+            url: "/"
+        },
+        {
+            name: "官方论坛",
+            url: "/"
+        }
     ],
     navSub: [
-        "首页",
-        "手机",
-        "“足迹系列”手感膜",
-        "官方配件",
-        "周边产品",
-        "第三方配件",
-        "全部商品",
-        "服务"
+        {
+            name: "首页",
+            url: "/"
+        },
+        {
+            name: "手机",
+            url: "/"
+        },
+        {
+            name: "“足迹系列”手感膜",
+            url: "/"
+        },
+        {
+            name: "官方配件",
+            url: "/"
+        },
+        {
+            name: "周边产品",
+            url: "/"
+        },
+        {
+            name: "第三方配件",
+            url: "/"
+        },
+        {
+            name: "全部商品",
+            url: "/"
+        },
+        {
+            name: "服务",
+            url: "/"
+        }
     ]
 };
 
