@@ -26,7 +26,8 @@ class Prompt extends Component {
                             <div className="dialog-tit clear">
                                 <h4 className="js-dialog-title">{this.props.title}</h4>
                             </div>
-                            <span className="dialog-close png"></span>
+                            <span className="dialog-close png"
+                                  onClick={this.toSure.bind(this)}></span>
                         </div>
                         <div className="dialog-con js-dialog-container">
                             <div className="confirm-msg">{this.props.tip}</div>

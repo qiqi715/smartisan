@@ -13,7 +13,15 @@ class Menu extends Component {
     }
 
     componentDidMount() {
-
+        /*单击其他关闭menu*/
+        document.addEventListener('click', e => {
+            if (!( e.target === this.refs.menu
+                || this.refs.menu.contains(e.target)) ) {
+                this.setState({
+                    isShow: false
+                });
+            }
+        });
     }
 
     /*菜单点击*/
@@ -36,6 +44,7 @@ class Menu extends Component {
                 this.state.isShow ? "gray-btn-menu-on" : ""
             ].join(" ")}
                  onClick={this.menuClick.bind(this, !this.state.isShow)}
+                 ref="menu"
             >
                 <span className="label">
                     <i className="arrow"></i>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 import '../../assets/css/payment.css';
+import Detail from './detail';
 import {
     orderUpdate,
     orderPayment,
@@ -36,6 +37,8 @@ class Payment extends Component {
         var order = this.props.orders.find( order => order.id == id);
         if (!order) {
             return "";
+        } else if(order.status != 0) {
+            this.props.history.push('/user/order');
         }
         var rs = order.items.reduce( (pre, next) => {
             pre.total += next.price * next.quantity;
@@ -64,58 +67,7 @@ class Payment extends Component {
                         </span>
                     </div>
                 </div>
-
-                <div className="confirm-detail">
-                    <div className="info-title">订单编号</div>
-                    <p className="info-detail">170620718648448</p>
-                </div>
-                <div className="confirm-detail">
-                    <div className="info-title">收货信息</div>
-                    <p className="info-detail">姓名：王某某</p>
-                    <p className="info-detail">联系电话：13811111111</p>  <p className="info-detail">详细地址：北京市市辖区海淀区上地十街辉煌国际西6号楼319室</p>
-                </div>
-                <div className="confirm-detail">
-                    <div className="info-title">发票信息</div>
-                    <p className="info-detail">发票类型：电子发票</p>
-                    <p className="info-detail">发票抬头：个人</p>
-                    <p className="info-detail">发票内容：购买商品明细</p>
-                </div>
-                <div className="confirm-table-title clear">
-                    <span className="name fn-left">商品信息</span>
-                    <span className="subtotal fn-right">小计</span>
-                    <span className="num fn-right">数量</span>
-                    <span className="price fn-right">单价</span>
-                </div>
-                <div className="confirm-goods-table">
-                    <div className="cart-items clear">
-                        <div className="name fn-left hide-row">
-                            <div className="name-cell">
-                                <a href="http://www.smartisan.com/shop/#/item/100029901" title="Smartisan 快充移动电源 10000mAh（灰色）" target="_blank">Smartisan 快充移动电源 10000mAh（灰色）</a><br/>
-                            </div>
-                        </div>
-                        <div className="subtotal fn-right">
-                            <div className="subtotal-cell">¥ 199.00</div>
-                        </div>
-                        <div className="goods-num fn-right">1</div>
-                        <div className="price fn-right">¥ 199.00</div>
-                    </div>
-                    <div className="cart-items clear">
-                        <div className="name fn-left hide-row">
-                            <div className="name-cell">
-                                <a href="http://www.smartisan.com/shop/#/item/100029901" title="Smartisan 快充移动电源 10000mAh（灰色）" target="_blank">Smartisan 快充移动电源 10000mAh（灰色）</a><br/>
-                            </div>
-                        </div>
-                        <div className="subtotal fn-right">
-                            <div className="subtotal-cell">¥ 199.00</div>
-                        </div>
-                        <div className="goods-num fn-right">1</div>
-                        <div className="price fn-right">¥ 199.00</div>
-                    </div>
-                </div>
-                <div className="order-discount-line">
-                    <p> 商品总计： <span>¥ 199.00</span> </p>
-                    <p> 运费： <span>+ ¥ 0.00</span> </p>
-                </div>
+                <Detail order={order} rs={rs}/>
             </div>
         );
     }

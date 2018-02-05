@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 
 class Order extends Component {
 
@@ -56,13 +57,14 @@ class Order extends Component {
                                 <div key={item.itemId} className="cart-items clear">
                                     <div className="prod-info clear">
                                         <div className="items-thumb">
-                                            <a href="javascript:;" target="_blank">
+                                            <Link to={"/detail/" + item.itemId} target="_blank">
                                                 <img src={item.cover}/>
-                                            </a>
+                                            </Link>
                                         </div>
                                         <div className="items-params clear">
                                             <div className="name vh-center">
-                                                <a href="javascript:;" target="_blank" title={title}>{title}</a>
+                                                <Link to={"/detail/" + item.itemId}  target="_blank" title={title}>
+                                                    {title}</Link>
                                             </div>
                                             <div className="detail"></div>
                                         </div>

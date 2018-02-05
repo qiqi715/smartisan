@@ -38,16 +38,59 @@ class UserOrder extends Component {
     /*订单支付*/
     orderPayment(id) {
         this.props.dispatch(orderPayment(id)).then( res => {
-            if (res.code) {
-                this.props.dispatch(promptUpdate({
-                    tip: res.data,
-                    show: true
-                }))
-            }
+            var tip = res.code ? res.data : "支付成功";
+            this.props.dispatch(promptUpdate({
+                tip,
+                show: true
+            }))
         });
     }
 
     render() {
+        var orders = this.props.orders.filter( order => {
+           switch (this.state.stateIndex) {
+               case 0:
+                   break;
+               case 1:
+                   if (order.status != 0) {
+                        return false;
+                   }
+                   break;
+               case 2:
+                   if (order.status != 1) {
+                       return false;
+                   }
+                   break;
+               case 3:
+                   break;
+           }
+
+            var date = new Date(order.orderTime);
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            switch (this.state.timeIndex) {
+                case 0:
+                    var isTrue = year === this.props.year
+                        && month <= this.props.month
+                        && month >= this.props.month - 2;
+
+                    if (this.props.month <= 2) {
+                        var lastMonth = this.props.month - 2 + 12;
+                        return isTrue ||
+                            (year === this.props.year - 1
+                            && month >= lastMonth);
+                    }
+                    return isTrue;
+                case 1:
+                    return year === this.props.year;
+                case 2:
+                    return year === this.props.year - 1;
+                case 3:
+                    return year === this.props.year - 2;
+            }
+        });
+
+        //var orders = this.props.orders;
         return (
             <div className="account-order">
                 <div className="gray-box">
@@ -67,8 +110,7 @@ class UserOrder extends Component {
                     </div>
                     <div className="js-list-inner">
                         {
-                            this.props.orders.map( order => {
-
+                            orders.map( order => {
                                 return (
                                     <Order key={order.id} order={order}
                                            orderPayment={this.orderPayment.bind(this)}
@@ -83,7 +125,12 @@ class UserOrder extends Component {
     }
 }
 
+var date = new Date();
+var year = date.getFullYear();
+var month = date.getMonth() + 1;
 UserOrder.defaultProps ={
+    year,
+    month,
     stateList: [
         "全部状态",
         "未完成",
@@ -93,8 +140,8 @@ UserOrder.defaultProps ={
     timeList: [
         "最近三个月",
         "今年内",
-        "2016年",
-        "2015年"
+        (year - 1) + "年",
+        (year - 2) + "年"
     ]
 }
 
